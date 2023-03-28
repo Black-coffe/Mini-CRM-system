@@ -34,6 +34,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="index.php?page=pages" class="nav-link text-white">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="index.php?page=pages"></use></svg>
+                        Pages
+                        </a>
+                    </li>
+                    <li>
                         <a href="index.php?page=register" class="nav-link text-white">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="index.php?page=register"></use></svg>
                         Register
