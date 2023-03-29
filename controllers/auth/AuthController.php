@@ -1,5 +1,7 @@
 <?php
-require_once 'app/models/AuthUser.php';
+namespace controllers\auth;
+
+use models\AuthUser;
 
 class AuthController{
 
@@ -27,7 +29,7 @@ class AuthController{
             $userModel = new AuthUser();
             $userModel->register($username, $email, $password);
         }
-        header("Location: index.php?page=login");
+        header("Location: APP_BASE_PATH . '/auth/login'");
     }
     
 
@@ -55,7 +57,8 @@ class AuthController{
                     setcookie('user_password', $password, time() + (7 * 24 * 60 * 60), '/');
                 }
     
-                header("Location: index.php");
+                $path = '/'. APP_BASE_PATH;
+                header("Location: $path");
             } else {
                 echo "Invalid email or password";
             }
@@ -68,7 +71,8 @@ class AuthController{
         session_start();
         session_unset();
         session_destroy();
-        header('Location: index.php');
+        $path = '/'. APP_BASE_PATH;
+        header("Location: $path");
     }
 
 }

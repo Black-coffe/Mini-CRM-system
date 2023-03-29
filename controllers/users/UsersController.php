@@ -1,7 +1,8 @@
 <?php
-require_once 'app/models/User.php';
-require_once 'app/models/roles/Role.php';
+namespace controllers\users;
 
+use models\roles\Role;
+use models\User;
 class UsersController{
 
     public function index(){
@@ -35,32 +36,34 @@ class UsersController{
             $userModel->create($data);
             
         }
-        header("Location: index.php?page=users");
+        $path = '/'. APP_BASE_PATH . '/users';
+        header("Location: $path");
     }
 
-    public function edit(){
+    public function edit($params){
         $userModel = new User();
-        $user = $userModel->read($_GET['id']);
-
+        $user = $userModel->read($params['id']);
+    
         $roleModel = new Role();
         $roles = $roleModel->getAllRoles();
-
+    
         include 'app/views/users/edit.php';
     }
+    
 
-    public function update(){
+    public function update($params){
         $userModel = new User();
-        $userModel->update($_GET['id'], $_POST);
-
-        header('Location: index.php?page=users');
+        $userModel->update($params['id'], $_POST);
+        $path = '/'. APP_BASE_PATH . '/users';
+        header("Location: $path");
     }
 
 
-    public function delete(){
+    public function delete($params){
         $userModel = new User();
-        $userModel->delete($_GET['id']);
-
-        header('Location: index.php?page=users');
+        $userModel->delete($params['id']);
+        $path = '/'. APP_BASE_PATH . '/users';
+        header("Location: $path");
     }
 
 }

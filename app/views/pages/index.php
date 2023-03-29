@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Pages</h1>
-  <a href="index.php?page=pages&action=create" class="btn btn-success">Create page</a>
+  <a href="/<?= APP_BASE_PATH ?>/pages/create" class="btn btn-success">Create page</a>
     <table class="table">
     <thead>
         <tr>
@@ -22,8 +22,8 @@ ob_start();
         <td><?= $page['title'] ?></td>
         <td><?= $page['slug'] ?></td>
         <td>
-            <a href="index.php?page=pages&action=edit&id=<?= $page['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
-            <form method="POST" action="index.php?page=pages&action=delete&id=<?= $page['id'] ?>" class="d-inline-block">
+            <a href="/<?= APP_BASE_PATH ?>/pages/edit/<?= $page['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+            <form method="POST" action="/<?= APP_BASE_PATH ?>/pages/delete/<?= $page['id'] ?>" class="d-inline-block">
             <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</button>
             </form>
         </td>

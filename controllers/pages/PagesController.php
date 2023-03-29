@@ -1,7 +1,9 @@
 <?php
-require_once 'app/models/pages/PageModel.php';
+namespace app\controllers\pages;
 
-class PageController{
+use app\models\pages\PageModel;
+
+class PagesController{
 
     public function index(){
         $pageModel = new PageModel();

@@ -1,4 +1,7 @@
 <?php
+namespace models\roles;
+
+use models\Database;
 
 class Role {
     private $db;
@@ -8,7 +11,7 @@ class Role {
 
         try{
             $result = $this->db->query("SELECT 1 FROM `roles` LIMIT 1");
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             $this->createTable();
         }
     }
@@ -23,7 +26,7 @@ class Role {
         try{
             $this->db->exec($roleTableQuery);
             return true;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -33,11 +36,11 @@ class Role {
         try{
             $stmt = $this->db->query("SELECT * FROM roles");
             $roles = [];
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
                 $roles[] = $row;
             }
             return $roles;
-        }catch(PDOException $e){
+        }catch(\PDOException $e){
             return false;
         }
     }
@@ -48,9 +51,9 @@ class Role {
         try{
             $stmt =$this->db->prepare($query);
             $stmt->execute([$id]);
-            $role = $stmt->fetch(PDO::FETCH_ASSOC);
+            $role = $stmt->fetch(\PDO::FETCH_ASSOC);
             return $role ? $role : false;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -63,11 +66,10 @@ class Role {
             $stmt = $this->db->prepare($query);
             $stmt->execute([$role_name, $role_description]);
             return true;
-        } catch(PDOException $e) {
+        } catch(\PDOException $e) {
             return false;
         }
     }
-
 
     public function updateRole($id, $role_name, $role_description){
         $query = "UPDATE roles SET role_name = ?, role_description = ? WHERE id = ?";
@@ -77,7 +79,7 @@ class Role {
             $stmt->execute([$role_name, $role_description, $id]);
             
             return true;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -89,7 +91,7 @@ class Role {
             $stmt = $this->db->prepare($query);
             $stmt->execute([$id]);
             return true;
-        } catch(PDOException $e) {
+        } catch(\PDOException $e) {
             return false;
         }
     }

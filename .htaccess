@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Исключить доступ к реальным файлам и каталогам
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Перенаправить запросы на index.php
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+
+

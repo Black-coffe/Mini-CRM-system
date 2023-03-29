@@ -1,4 +1,7 @@
 <?php
+namespace models;
+
+use models\Database;
 
 class AuthUser {
     private $db;
@@ -8,7 +11,7 @@ class AuthUser {
 
         try{
             $result = $this->db->query("SELECT 1 FROM `users` LIMIT 1");
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             $this->createTable();
         }
     }
@@ -39,7 +42,7 @@ class AuthUser {
             $this->db->exec($roleTableQuery);
             $this->db->exec($userTableQuery);
             return true;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -53,7 +56,7 @@ class AuthUser {
             $stmt = $this->db->prepare($query);
             $stmt->execute([$username, $email, password_hash($password, PASSWORD_DEFAULT), $created_at]);
             return true;
-        } catch(PDOException $e) {
+        } catch(\PDOException $e) {
             return false;
         }
     }
@@ -64,14 +67,14 @@ class AuthUser {
 
             $stmt = $this->db->prepare($query);
             $stmt->execute([$email]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             if ($user && password_verify($password, $user['password'])) {
                 return $user;
             }
             
             return false;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -82,10 +85,10 @@ class AuthUser {
 
             $stmt = $this->db->prepare($query);
             $stmt->execute([$email]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             return $user ? $user : false;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }

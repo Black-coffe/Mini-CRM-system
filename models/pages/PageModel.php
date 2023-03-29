@@ -1,4 +1,7 @@
 <?php
+namespace models\pages;
+
+use models\Database;
 
 class PageModel {
     private $db;
@@ -8,7 +11,7 @@ class PageModel {
 
         try{
             $result = $this->db->query("SELECT 1 FROM `pages` LIMIT 1");
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             $this->createTable();
         }
     }
@@ -26,7 +29,7 @@ class PageModel {
         try{
             $this->db->exec($roleTableQuery);
             return true;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -36,11 +39,11 @@ class PageModel {
         try{
             $stmt = $this->db->query("SELECT * FROM pages");
             $pages = [];
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
                 $pages[] = $row;
             }
             return $pages;
-        }catch(PDOException $e){
+        }catch(\PDOException $e){
             return false;
         }
     }
@@ -51,9 +54,9 @@ class PageModel {
         try{
             $stmt =$this->db->prepare($query);
             $stmt->execute([$id]);
-            $page = $stmt->fetch(PDO::FETCH_ASSOC);
+            $page = $stmt->fetch(\PDO::FETCH_ASSOC);
             return $page ? $page : false;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -66,7 +69,7 @@ class PageModel {
             $stmt = $this->db->prepare($query);
             $stmt->execute([$title, $slug]);
             return true;
-        } catch(PDOException $e) {
+        } catch(\PDOException $e) {
             return false;
         }
     }
@@ -80,7 +83,7 @@ class PageModel {
             $stmt->execute([$title, $slug, $id]);
             
             return true;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -92,7 +95,7 @@ class PageModel {
             $stmt = $this->db->prepare($query);
             $stmt->execute([$id]);
             return true;
-        } catch(PDOException $e) {
+        } catch(\PDOException $e) {
             return false;
         }
     }

@@ -5,7 +5,7 @@ ob_start();
 ?>
 
     <h1 class="mb-4">Authorization</h1>
-    <form method="POST" action="/<?= APP_BASE_PATH ?>/auth/authenticate">
+    <form method="POST" action="index.php?page=auth&action=authenticate">
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input type="email" class="form-control" id="email" name="email" required>

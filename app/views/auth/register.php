@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Register</h1>
-    <form method="POST" action="/<?= APP_BASE_PATH ?>/users/store">
+    <form method="POST" action="index.php?page=auth&action=store">
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <input type="text" class="form-control" id="username" name="username" required>

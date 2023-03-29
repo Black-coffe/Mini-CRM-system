@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Edit Page</h1>
-    <form method="POST" action="index.php?page=pages&action=update">
+    <form method="POST" action="/<?= APP_BASE_PATH ?>/pages/update/<?php echo $page['id']; ?>">
     <input type="hidden" name="id" value="<?= $page['id'] ?>">
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
