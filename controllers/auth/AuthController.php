@@ -51,6 +51,7 @@ class AuthController{
                 session_start();
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_role'] = $user['role'];
+                $_SESSION['user_email'] = $user['email'];
     
                 if($remember == 'on'){
                     setcookie('user_email', $email, time() + (7 * 24 * 60 * 60), '/');

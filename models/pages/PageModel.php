@@ -2,6 +2,7 @@
 namespace models\pages;
 
 use models\Database;
+use models\roles\Role;
 
 class PageModel {
     private $db;
@@ -21,6 +22,7 @@ class PageModel {
             `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
             `title` VARCHAR(255) NOT NULL,
             `slug` VARCHAR(255) NOT NULL,
+            `role` VARCHAR(255) NOT NULL,
             `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -61,13 +63,26 @@ class PageModel {
         }
     }
 
-    public function createPage($title, $slug) {
+    public function findBySlug($slug){
+        $query = "SELECT * FROM pages WHERE slug = ?";
 
-        $query = "INSERT INTO pages (title, slug) VALUES (?, ?)";
+        try{
+            $stmt =$this->db->prepare($query);
+            $stmt->execute([$slug]);
+            $page = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $page ? $page : false;
+        } catch(\PDOException $e){
+            return false;
+        }
+    }
+
+    public function createPage($title, $slug, $roles) {
+
+        $query = "INSERT INTO pages (title, slug, role) VALUES (?, ?, ?)";
 
         try {
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$title, $slug]);
+            $stmt->execute([$title, $slug, $roles]);
             return true;
         } catch(\PDOException $e) {
             return false;
@@ -75,12 +90,12 @@ class PageModel {
     }
 
 
-    public function updatePage($id, $title, $slug){
-        $query = "UPDATE pages SET title = ?, slug = ? WHERE id = ?";
+    public function updatePage($id, $title, $slug, $roles){
+        $query = "UPDATE pages SET title = ?, slug = ?, role = ? WHERE id = ?";
         
         try{
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$title, $slug, $id]);
+            $stmt->execute([$title, $slug, $roles, $id]);
             
             return true;
         } catch(\PDOException $e){

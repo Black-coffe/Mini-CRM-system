@@ -2,6 +2,7 @@
 
 $title = 'Create page';
 ob_start(); 
+
 ?>
 
   <h1 class="mb-4">Create page</h1>
@@ -13,6 +14,15 @@ ob_start();
     <div class="mb-3">
         <label for="slug" class="form-label">Slug</label>
         <input type="text" class="form-control" id="slug" name="slug" required>
+    </div>
+    <div id="roles-container" class="mb-3">
+        <label for="roles" class="form-label">Roles</label>
+        <?php foreach ($roles as $role): ?>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="roles[]" value="<?php echo $role['id']; ?>">
+                <label class="form-check-label" for="roles"><?php echo $role['role_name']; ?></label>
+            </div>
+        <?php endforeach; ?>
     </div>
     <button type="submit" class="btn btn-primary">Create page</button>
     </form>

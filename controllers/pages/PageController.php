@@ -2,10 +2,22 @@
 namespace controllers\pages;
 
 use models\pages\PageModel;
+use models\roles\Role;
+use models\Check;
 
 class PageController{
 
+    private $check;
+
+    public function __construct()
+    {
+        $userRole = isset($_SESSION['user_role']) ? $_SESSION['user_role'] : null;
+        $this->check = new Check($userRole);
+    }
+
     public function index(){
+        $this->check->requirePermission();
+
         $pageModel = new PageModel();
         $pages = $pageModel->getAllPages();
 
@@ -13,27 +25,39 @@ class PageController{
     }
 
     public function create(){
+        // $this->check->requirePermission();
+
+        $roleModel = new Role();
+        $roles = $roleModel->getAllRoles();
         include 'app/views/pages/create.php';
     }
 
     public function store(){
-        if(isset($_POST['title']) && isset($_POST['slug'])){
+        // $this->check->requirePermission();
+
+        if(isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['roles'])){
             $title = trim($_POST['title']);
             $slug = trim($_POST['slug']);
+            $roles = implode(",", $_POST['roles']);
 
-            if (empty($title) || empty($slug)) {
-                echo "Title and Slug fields are required!";
+            if (empty($title) || empty($slug) || empty($roles)) {
+                echo "Title and Slug or Role fields are required!";
                 return;
             }
 
             $pageModel = new PageModel();
-            $pageModel->createPage($title, $slug);
+            $pageModel->createPage($title, $slug, $roles);
         }
         $path = '/'. APP_BASE_PATH . '/pages';
         header("Location: $path");
     }
 
     public function edit($params){
+        // $this->check->requirePermission();
+
+        $roleModel = new Role();
+        $roles = $roleModel->getAllRoles();
+
         $pageModel = new PageModel();
         $page = $pageModel->getPageById($params['id']);
 
@@ -46,28 +70,34 @@ class PageController{
     }
 
     public function update($params){
-        if(isset($params['id']) && isset($_POST['title']) && isset($_POST['slug'])){
+        $this->check->requirePermission();
+
+        if(isset($params['id']) && isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['roles'])){
             $id = trim($params['id']);
             $title = trim($_POST['title']);
             $slug = trim($_POST['slug']);
+            $roles = implode(",", $_POST['roles']);
 
-            if (empty($title) || empty($slug)) {
-                echo "Title and Slug fields are required!";
+            if (empty($title) || empty($slug) || empty($roles)) {
+                echo "Title and Slug or Role fields are required!";
                 return;
             }
 
             $pageModel = new PageModel();
-            $pageModel->updatePage($id, $title, $slug);
+            $pageModel->updatePage($id, $title, $slug, $roles);
         }
         $path = '/'. APP_BASE_PATH . '/pages';
         header("Location: $path");
     }
 
     public function delete($params){
+        $this->check->requirePermission();
+
         $pageModel = new PageModel();
         $pageModel->deletePage($params['id']);
 
         $path = '/'. APP_BASE_PATH . '/pages';
         header("Location: $path");
     }
+
 }
