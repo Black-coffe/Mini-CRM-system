@@ -3,6 +3,7 @@
 <head>
     <title><?= $title ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/<?= APP_BASE_PATH ?>/app/css/style.css">
 </head>
 <body>
 <div class="container">
@@ -16,45 +17,35 @@
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="/<?= APP_BASE_PATH ?>" class="nav-link active" aria-current="page">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>"></use></svg>
-                        Home
+                        <a href="/<?= APP_BASE_PATH ?>" class="nav-link <?= is_active('/' . APP_BASE_PATH) ?>" aria-current="page">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>"></use></svg>
+                            Home
                         </a>
                     </li>
                     <li>
-                        <a href="/<?= APP_BASE_PATH ?>/users" class="nav-link text-white">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/users"></use></svg>
-                        Users
+                        <a href="/<?= APP_BASE_PATH ?>/users" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/users') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/users"></use></svg>
+                            Users
                         </a>
                     </li>
                     <li>
-                        <a href="/<?= APP_BASE_PATH ?>/roles" class="nav-link text-white">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/roles"></use></svg>
-                        Roles
+                        <a href="/<?= APP_BASE_PATH ?>/roles" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/roles') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/roles"></use></svg>
+                            Roles
                         </a>
                     </li>
                     <li>
-                        <a href="/<?= APP_BASE_PATH ?>/pages" class="nav-link text-white">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/pages"></use></svg>
-                        Pages
+                        <a href="/<?= APP_BASE_PATH ?>/pages" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/pages') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/pages"></use></svg>
+                            Pages
                         </a>
                     </li>
+                    <hr>
+                    <h4>To do list</h4>
                     <li>
-                        <a href="/<?= APP_BASE_PATH ?>/auth/register" class="nav-link text-white">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/auth/register"></use></svg>
-                        Register
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/<?= APP_BASE_PATH ?>/auth/login" class="nav-link text-white">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/auth/login"></use></svg>
-                        Login
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/<?= APP_BASE_PATH ?>/auth/logout" class="nav-link text-white">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/auth/logout"></use></svg>
-                        Logout
+                        <a href="/<?= APP_BASE_PATH ?>/todo/category" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/todo/category') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/todo/category"></use></svg>
+                            Category
                         </a>
                     </li>
                 </ul>
@@ -69,7 +60,8 @@
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><a class="dropdown-item" href="/<?= APP_BASE_PATH ?>/auth/logout">Sign out</a></li>
+                    <li><a class="dropdown-item" href="/<?= APP_BASE_PATH ?>/auth/login">Sign in</a></li>
                 </ul>
                 </div>
             </div>

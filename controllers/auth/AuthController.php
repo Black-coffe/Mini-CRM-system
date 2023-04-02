@@ -6,7 +6,7 @@ use models\AuthUser;
 class AuthController{
 
     public function register(){
-        include 'app/views/users/register.php';
+        include 'app/views/auth/register.php';
     }
 
     public function store(){
@@ -34,7 +34,7 @@ class AuthController{
     
 
     public function login(){
-        include 'app/views/users/login.php';
+        include 'app/views/auth/login.php';
     }
 
     public function authenticate(){

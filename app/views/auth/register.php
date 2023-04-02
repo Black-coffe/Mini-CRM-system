@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Register</h1>
-    <form method="POST" action="index.php?page=auth&action=store">
+    <form method="POST" action="/<?= APP_BASE_PATH ?>/users/store">
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <input type="text" class="form-control" id="username" name="username" required>
@@ -25,7 +25,7 @@ ob_start();
       <button type="submit" class="btn btn-primary">Register</button>
     </form>
     <div class="mt-4">
-      <p>Already have an account? <a href="index.php?page=login">Login here</a></p>
+      <p>Already have an account? <a href="/<?= APP_BASE_PATH ?>/auth/login">Login here</a></p>
     </div>
 
 <?php $content = ob_get_clean(); 
