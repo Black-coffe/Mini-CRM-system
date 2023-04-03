@@ -4,6 +4,7 @@
     <title><?= $title ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/<?= APP_BASE_PATH ?>/app/css/style.css">
+    <script src="https://kit.fontawesome.com/6e56039614.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container">
@@ -42,6 +43,12 @@
                     </li>
                     <hr>
                     <h4>To do list</h4>
+                    <li>
+                        <a href="/<?= APP_BASE_PATH ?>/todo/tasks" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/todo/tasks') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/todo/tasks"></use></svg>
+                            Tasks
+                        </a>
+                    </li>
                     <li>
                         <a href="/<?= APP_BASE_PATH ?>/todo/category" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/todo/category') ?>">
                             <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/todo/category"></use></svg>

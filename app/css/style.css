@@ -4,3 +4,31 @@
     font-size: 18px;
     font-weight: 300;
 }
+
+h2.accordion-header{
+    width: 100%;
+}
+
+.accordion-header button.accordion-button span{
+    display: inline-block;
+    margin-right: 22px;
+}
+
+.accordion-header button.accordion-button span i{
+    display: inline-block;
+    margin-right: 3px;
+    color: #198754;
+}
+
+.accordion-button::before {
+    display: none;
+}
+.accordion-button::before {
+    content: "\f054";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 1rem;
+}
+.accordion-button.collapsed::before {
+    content: "\f053";
+}
