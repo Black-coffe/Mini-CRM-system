@@ -32,3 +32,26 @@ h2.accordion-header{
 .accordion-button.collapsed::before {
     content: "\f053";
 }
+
+/* Стилизация тегов на странице редактирования тегов */
+div.tags-container div.tag{
+    display: inline-block;
+    background: #020202;
+    color: #f1f1f1;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin: 5px 4px;
+}
+
+div.tags-container div.tag button{
+    border: none;
+    background: inherit;
+    color: #ffffff;
+    padding-left: 11px;
+    border-left: 1px solid #c1c1c1;
+}
+
+div.tags-container div.tag span{
+    display: inline-block;
+    padding-right: 10px;
+}
