@@ -46,7 +46,25 @@
                     <li>
                         <a href="/<?= APP_BASE_PATH ?>/todo/tasks" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/todo/tasks') ?>">
                             <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/todo/tasks"></use></svg>
-                            Tasks
+                            Tasks (opened)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/<?= APP_BASE_PATH ?>/todo/tasks/completed" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/todo/tasks/completed') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/todo/tasks/completed"></use></svg>
+                            Tasks (completed)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/<?= APP_BASE_PATH ?>/todo/tasks/expired" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/todo/tasks/expired') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/todo/tasks/expired"></use></svg>
+                            Tasks (expired)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/<?= APP_BASE_PATH ?>/todo/tasks/create" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH . '/todo/tasks/create') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="/<?= APP_BASE_PATH ?>/todo/tasks/create"></use></svg>
+                            Create task
                         </a>
                     </li>
                     <li>
@@ -84,6 +102,6 @@
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    <script src="/<?= APP_BASE_PATH ?>/app/js/my.js"></script>
 </body>
 </html>

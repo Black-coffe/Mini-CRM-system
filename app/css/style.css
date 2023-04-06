@@ -34,7 +34,8 @@ h2.accordion-header{
 }
 
 /* Стилизация тегов на странице редактирования тегов */
-div.tags-container div.tag{
+div.tags-container div.tag,
+.accordion-body p a.tag{
     display: inline-block;
     background: #020202;
     color: #f1f1f1;
@@ -54,4 +55,36 @@ div.tags-container div.tag button{
 div.tags-container div.tag span{
     display: inline-block;
     padding-right: 10px;
+}
+
+/* Оформление вывода задач (tasks) */
+
+.accordion-header button{
+    border-radius: 3px;
+    color: #ffffff !important;
+}
+
+.accordion-header button span{
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.accordion-body p a.tag{
+    text-decoration: none;
+}
+
+.accordion-body p a.tag:hover{
+    background: #198754;
+}
+
+.filter-priority a{
+    color: #ffffff;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.filter-priority a:hover{
+    color: #ffffff;
+    font-weight: 500;
+    text-decoration: underline;
 }
