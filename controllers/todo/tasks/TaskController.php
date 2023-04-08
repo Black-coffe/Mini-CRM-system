@@ -184,6 +184,7 @@ class TaskController{
 
             // Добавляем новые теги и связываем с задачей
             foreach ($tags as $tag_name){
+                $tag_name = strtolower($tag_name);
                 $tag = $this->tagsModel->getTagByNameAndUserId($tag_name, $data['user_id']);
                 tt($tag);
                 if (!$tag){
@@ -215,4 +216,27 @@ class TaskController{
         $path = '/'. APP_BASE_PATH . '/todo/category';
         header("Location: $path");
     }
+
+    public function tasksByTag($params){
+        $this->check->requirePermission();
+
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+
+        $taskModel = new TaskModel();
+        $tasksByTag = $taskModel->getTasksByTagId($params['id'], $user_id);
+
+        $tagsModel = new TagsModel();
+        $tagname = $tagsModel->getTagNameById($params['id']);
+
+        $categoryModel = new CategoryModel();
+
+        // Получение списка тегов для каждой записи в массиве
+        foreach($tasksByTag as &$task){
+            $task['tags'] = $this->tagsModel->getTagsByTaskId($task['task_id']);
+            $task['category'] = $categoryModel->getCategoryById($task['category_id']);
+        }
+
+        include 'app/views/todo/tasks/by-tag.php';
+    }
+
 }

@@ -44,15 +44,18 @@ class TagsModel {
         JOIN task_tags ON tags.id = task_tags.tag_id
         WHERE task_tags.task_id = :task_id";
         
-        try{
+        try {
             $stmt = $this->db->prepare($query);
             $stmt->execute(['task_id' => $task_id]);
     
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch(\PDOException $e){
-            return false;
+            $tags = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            
+            return $tags ? $tags : [];
+        } catch (\PDOException $e) {
+            return [];
         }
     }
+    
 
     public function removeAllTaskTags($task_id) {
         $query = "DELETE FROM task_tags WHERE task_id = :task_id";
@@ -80,7 +83,8 @@ class TagsModel {
 
     public function addTag($tag_name, $user_id)
     {
-        $query = "INSERT INTO tags (name, user_id) VALUE (?, ?)";
+        $tag_name = strtolower($tag_name);
+        $query = "INSERT INTO tags (name, user_id) VALUE (LOWER(?), ?)";
 
         try {
             $stmt = $this->db->prepare($query);
@@ -117,6 +121,20 @@ class TagsModel {
                 $stmt->execute([$tag_id]);
                 return true;
             }
+        } catch(\PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getTagNameById($tag_id)
+    {
+        $query = "SELECT name FROM tags WHERE id = ?";
+
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$tag_id]);
+            $tag = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $tag ? $tag['name'] : '';
         } catch(\PDOException $e) {
             return false;
         }

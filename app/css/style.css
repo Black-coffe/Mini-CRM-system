@@ -88,3 +88,14 @@ div.tags-container div.tag span{
     font-weight: 500;
     text-decoration: underline;
 }
+
+.accordion-header button.accordion-button span{
+    display: inline-block;
+    margin-right: 22px;
+}
+
+.accordion-header button.accordion-button span i{
+    display: inline-block;
+    margin-right: 4px;
+    color: #e2e2e2;
+}
