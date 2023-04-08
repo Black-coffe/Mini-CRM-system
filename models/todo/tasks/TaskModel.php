@@ -177,6 +177,34 @@ class TaskModel {
         } 
     }
 
-    
+    public function updateTaskStatus($id, $status, $datetime){
+
+        $query = "UPDATE todo_list SET status = :status";
+
+        try{
+            if($datetime !== null){
+                $query .= ", copleted_at = :copleted_at";
+            }else{
+                $query .= ", copleted_at = NULL";
+            }
+
+            $query .= " WHERE id = :id";
+            
+            $stmt = $this->db->prepare($query);
+
+            $params = [':status' => $status, ':id' => $id];
+
+            if($datetime !== null){
+                $params[':copleted_at'] = $datetime;
+            }
+
+            $stmt->execute($params);
+            return $stmt->rowCount() > 0;
+        }catch(\PDOException $e){
+            return false;
+        } 
+    }
+
+
 }
 ?>

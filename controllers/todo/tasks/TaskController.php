@@ -239,4 +239,26 @@ class TaskController{
         include 'app/views/todo/tasks/by-tag.php';
     }
 
+    public function updateStatus($params){
+        $this->check->requirePermission();
+
+        $datetime = null;
+        $status = $_POST['status'];
+
+        if($status){
+            if($status === 'completed'){
+                $datetime = date("Y-m-d H:i:s");
+            }
+            
+            $taskModel = new TaskModel();
+            $taskModel->updateTaskStatus($params['id'], $status, $datetime);
+
+            $path = '/'. APP_BASE_PATH . '/todo/tasks';
+            header("Location: $path");
+        }else{
+            echo "Не удалось обновить статус";
+        }
+
+    }
+
 }

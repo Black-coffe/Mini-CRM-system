@@ -99,3 +99,7 @@ div.tags-container div.tag span{
     margin-right: 4px;
     color: #e2e2e2;
 }
+
+.article .container h1 span{
+    color: coral;
+}
