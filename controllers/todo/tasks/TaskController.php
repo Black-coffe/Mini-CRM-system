@@ -261,4 +261,25 @@ class TaskController{
 
     }
 
+    public function task($params){
+        $this->check->requirePermission();
+
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+
+        $taskModel = new TaskModel();
+        $task = $taskModel->getTaskByIdAndByIdUser($params['id'], $user_id);
+
+        $todoCategoryModel = new CategoryModel();
+        $category = $todoCategoryModel->getCategoryById($task['category_id']);
+
+        if(!$task){
+            echo "Task not found";
+            return;
+        }
+
+        $tags = $this->tagsModel->getTagsByTaskId($task['id']);
+
+        include 'app/views/todo/tasks/task.php';
+    }
+
 }

@@ -134,6 +134,20 @@ class TaskModel {
         }
     }
 
+    public function getTaskByIdAndByIdUser($id_task, $id_user)
+    {
+        $query = "SELECT * FROM todo_list WHERE id = ? AND user_id = ?";
+
+        try{
+            $stmt =$this->db->prepare($query);
+            $stmt->execute([$id_task, $id_user]);
+            $todo_task = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $todo_task ? $todo_task : [];
+        } catch(\PDOException $e){
+            return false;
+        }
+    }
+
     public function updateTask($data)
     {
         $query = "UPDATE todo_list SET title = ?, category_id = ?, finish_date = ?, reminder_at = ?, status = ?, priority = ?, description = ? WHERE id = ?";

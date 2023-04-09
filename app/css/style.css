@@ -35,7 +35,8 @@ h2.accordion-header{
 
 /* Стилизация тегов на странице редактирования тегов */
 div.tags-container div.tag,
-.accordion-body p a.tag{
+.accordion-body p a.tag,
+.card-body p a.tag{
     display: inline-block;
     background: #020202;
     color: #f1f1f1;
@@ -69,10 +70,12 @@ div.tags-container div.tag span{
     font-weight: 300;
 }
 
-.accordion-body p a.tag{
+.accordion-body p a.tag,
+.card-body p a.tag{
     text-decoration: none;
 }
 
+.card-body p a.tag:hover,
 .accordion-body p a.tag:hover{
     background: #198754;
 }
@@ -102,4 +105,11 @@ div.tags-container div.tag span{
 
 .article .container h1 span{
     color: coral;
+}
+
+/* Кастомизация календаря на главной */
+
+.fc-event:hover{
+    background-color: coral;
+    cursor: pointer;
 }
