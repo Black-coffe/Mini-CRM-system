@@ -31,8 +31,8 @@ class UsersController{
     public function store(){
         $this->check->requirePermission();
         if(isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['confirm_password'])){
-            $password = $_POST['password'];
-            $confirm_password = $_POST['confirm_password'];
+            $password = trim($_POST['password']);
+            $confirm_password = trim($_POST['confirm_password']);
 
             if ($password !== $confirm_password) {
                 echo "Passwords do not match";
@@ -41,8 +41,8 @@ class UsersController{
 
             $userModel = new User();
             $data = [
-              'username' => $_POST['username'],
-              'email' => $_POST['email'],
+              'username' => trim(htmlspecialchars($_POST['username'])),
+              'email' => trim(htmlspecialchars($_POST['email'])),
               'password' => $password,
               'role' => 1, 
             ];
@@ -72,7 +72,7 @@ class UsersController{
         $userModel = new User();
         $userModel->update($params['id'], $_POST);
         if (isset($_POST['email'])) {
-            $newEmail = $_POST['email'];
+            $newEmail = trim(htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8'));
             
             // Проверяем, совпадает ли роль текущего пользователя с обновленной ролью
             if ($newEmail == $_SESSION['user_email']) {

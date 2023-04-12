@@ -21,7 +21,7 @@ ob_start();
       <button type="submit" class="btn btn-primary">Login</button>
     </form>
     <div class="mt-3 text-center">
-      Don't have an account? <a href="/<?= APP_BASE_PATH ?>/auth/register">Register here</a>
+      Don't have an account? <a href="/<?= APP_BASE_PATH ?>/auth/register"><?=htmlspecialchars("Register here")?></a>
     </div>
 
 <?php $content = ob_get_clean(); 

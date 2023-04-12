@@ -11,8 +11,8 @@ class AuthController{
 
     public function store(){
         if(isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['confirm_password'])){
-            $username = trim($_POST['username']);
-            $email = trim($_POST['email']);
+            $username = trim(htmlspecialchars($_POST['username']));
+            $email = trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
             $password = trim($_POST['password']);
             $confirm_password = trim($_POST['confirm_password']);
     

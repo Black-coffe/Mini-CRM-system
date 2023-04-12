@@ -25,7 +25,7 @@ class PageController{
     }
 
     public function create(){
-        // $this->check->requirePermission();
+        $this->check->requirePermission();
 
         $roleModel = new Role();
         $roles = $roleModel->getAllRoles();
@@ -33,12 +33,14 @@ class PageController{
     }
 
     public function store(){
-        // $this->check->requirePermission();
+        $this->check->requirePermission();
 
         if(isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['roles'])){
-            $title = trim($_POST['title']);
-            $slug = trim($_POST['slug']);
-            $roles = implode(",", $_POST['roles']);
+            $title = trim(htmlspecialchars($_POST['title']));
+            $slug = trim(htmlspecialchars($_POST['slug']));
+            $roles = filter_var_array($_POST['roles'], FILTER_SANITIZE_NUMBER_INT);
+
+            $roles = implode(",", $roles);
 
             if (empty($title) || empty($slug) || empty($roles)) {
                 echo "Title and Slug or Role fields are required!";
@@ -53,7 +55,7 @@ class PageController{
     }
 
     public function edit($params){
-        // $this->check->requirePermission();
+        $this->check->requirePermission();
 
         $roleModel = new Role();
         $roles = $roleModel->getAllRoles();
@@ -74,9 +76,11 @@ class PageController{
 
         if(isset($params['id']) && isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['roles'])){
             $id = trim($params['id']);
-            $title = trim($_POST['title']);
-            $slug = trim($_POST['slug']);
-            $roles = implode(",", $_POST['roles']);
+            $title = trim(htmlspecialchars($_POST['title']));
+            $slug = trim(htmlspecialchars($_POST['slug']));
+            $roles = filter_var_array($_POST['roles'], FILTER_SANITIZE_NUMBER_INT);
+
+            $roles = implode(",", $roles);
 
             if (empty($title) || empty($slug) || empty($roles)) {
                 echo "Title and Slug or Role fields are required!";

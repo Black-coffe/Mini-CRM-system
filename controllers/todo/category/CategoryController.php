@@ -32,8 +32,8 @@ class CategoryController{
     public function store(){
         $this->check->requirePermission();
         if(isset($_POST['title']) && isset($_POST['description'])){
-            $title = trim($_POST['title']);
-            $description = trim($_POST['description']);
+            $title = trim(htmlspecialchars($_POST['title']));
+            $description = trim(htmlspecialchars($_POST['description']));
             $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
             if (empty($title) || empty($description)) {
@@ -54,6 +54,14 @@ class CategoryController{
         $todoCategoryModel = new CategoryModel();
         $category = $todoCategoryModel->getCategoryById($params['id']);
 
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+
+        if(!$category || $category['user'] != $user_id){
+            http_response_code(404);
+            include 'app/views/errors/404.php';
+            return;
+        }
+
         if(!$category){
             echo "Category not found";
             return;
@@ -68,8 +76,8 @@ class CategoryController{
 
         if(isset($params['id']) && isset($_POST['title']) && isset($_POST['description'])){
             $id = trim($params['id']);
-            $title = trim($_POST['title']);
-            $description = trim($_POST['description']);
+            $title = trim(htmlspecialchars($_POST['title']));
+            $description = trim(htmlspecialchars($_POST['description']));
             $usability  = isset($_POST['usability']) ? $_POST['usability'] : 0;
 
             if (empty($title) || empty($description)) {
@@ -87,7 +95,7 @@ class CategoryController{
     public function delete($params){
         $this->check->requirePermission();
 
-         $todoCategoryModel = new CategoryModel();
+        $todoCategoryModel = new CategoryModel();
         $todoCategoryModel->deleteCategory($params['id']);
 
         $path = '/'. APP_BASE_PATH . '/todo/category';
