@@ -16,9 +16,8 @@ class Check
         $url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $parsedUrl = parse_url($url);
         $path = $parsedUrl['path'];
-        $pathWithoutBase = str_replace(APP_BASE_PATH, '', $path);
 
-        $segments = explode('/',ltrim($pathWithoutBase, '/') );
+        $segments = explode('/',ltrim($path, '/') );
         $firstTwoSegments = array_slice($segments, 0, 2);
         $slug = implode('/', $firstTwoSegments);
         return $slug;
@@ -44,11 +43,14 @@ class Check
 
     public function requirePermission()
     {
+        if(!ENABLE_PERMISSION_CHECK){
+            return;
+        }
+        
         $slug = $this->getCurrentUrlSlug();
 
         if (!$this->checkPermission($slug)) {
-            $path = '/' . APP_BASE_PATH;
-            header("Location: $path");
+            header("Location: /");
             exit();
         }
     }

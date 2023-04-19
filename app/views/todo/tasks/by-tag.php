@@ -53,7 +53,7 @@ ob_start();
                         </p>
                         <p><strong><i class="fa-solid fa-file-prescription"></i> Tags:</strong> 
                             <?php foreach ($oneTask['tags'] as $tag): ?>
-                                <a href="/<?= APP_BASE_PATH ?>/todo/tasks/by-tag/<?= $tag['id'] ?>" class="tag"><?= htmlspecialchars($tag['name']) ?></a>
+                                <a href="/todo/tasks/by-tag/<?= $tag['id'] ?>" class="tag"><?= htmlspecialchars($tag['name']) ?></a>
                             <?php endforeach; ?>
                         </p>
                         <p>
@@ -62,8 +62,8 @@ ob_start();
                         <hr>
                         <div class="d-flex justify-content-start action-task">
 
-                            <a href="/<?= APP_BASE_PATH ?>/todo/tasks/edit/<?php echo $oneTask['task_id']; ?>" class="btn btn-primary me-2">Edit</a>
-                            <a href="/<?= APP_BASE_PATH ?>/todo/tasks/delete/<?php echo $oneTask['task_id']; ?>" class="btn btn-danger me-2">Delete</a>
+                            <a href="/todo/tasks/edit/<?php echo $oneTask['task_id']; ?>" class="btn btn-primary me-2">Edit</a>
+                            <a href="/todo/tasks/delete/<?php echo $oneTask['task_id']; ?>" class="btn btn-danger me-2">Delete</a>
                         </div>
 
                     </div>

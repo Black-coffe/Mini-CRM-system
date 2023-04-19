@@ -10,6 +10,7 @@ class AuthController{
     }
 
     public function store(){
+        // tte($_POST);
         if(isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['confirm_password'])){
             $username = trim(htmlspecialchars($_POST['username']));
             $email = trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
@@ -29,7 +30,7 @@ class AuthController{
             $userModel = new AuthUser();
             $userModel->register($username, $email, $password);
         }
-        header("Location: APP_BASE_PATH . '/auth/login'");
+        header("Location: /auth/login");
     }
     
 
@@ -58,8 +59,7 @@ class AuthController{
                     setcookie('user_password', $password, time() + (7 * 24 * 60 * 60), '/');
                 }
     
-                $path = '/'. APP_BASE_PATH;
-                header("Location: $path");
+                header("Location: /");
             } else {
                 echo "Invalid email or password";
             }
@@ -72,8 +72,7 @@ class AuthController{
         session_start();
         session_unset();
         session_destroy();
-        $path = '/'. APP_BASE_PATH;
-        header("Location: $path");
+        header("Location: /");
     }
 
 }

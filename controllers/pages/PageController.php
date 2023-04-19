@@ -50,8 +50,7 @@ class PageController{
             $pageModel = new PageModel();
             $pageModel->createPage($title, $slug, $roles);
         }
-        $path = '/'. APP_BASE_PATH . '/pages';
-        header("Location: $path");
+        header("Location: /pages");
     }
 
     public function edit($params){
@@ -90,8 +89,7 @@ class PageController{
             $pageModel = new PageModel();
             $pageModel->updatePage($id, $title, $slug, $roles);
         }
-        $path = '/'. APP_BASE_PATH . '/pages';
-        header("Location: $path");
+        header("Location: /pages");
     }
 
     public function delete($params){
@@ -100,8 +98,7 @@ class PageController{
         $pageModel = new PageModel();
         $pageModel->deletePage($params['id']);
 
-        $path = '/'. APP_BASE_PATH . '/pages';
-        header("Location: $path");
+        header("Location: /pages");
     }
 
 }

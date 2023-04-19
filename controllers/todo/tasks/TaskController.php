@@ -100,8 +100,7 @@ class TaskController{
             $taskModel->createTask($data);
 
         }
-        $path = '/'. APP_BASE_PATH . '/todo/tasks';
-        header("Location: $path");
+        header("Location: /todo/tasks");
     }
 
     public function edit($params){
@@ -212,8 +211,7 @@ class TaskController{
 
         }
    
-        $path = '/'. APP_BASE_PATH . '/todo/tasks';
-        header("Location: $path");
+        header("Location: /todo/tasks");
     }
 
     public function delete($params){
@@ -222,8 +220,7 @@ class TaskController{
         $todoCategoryModel = new CategoryModel();
         $todoCategoryModel->deleteCategory($params['id']);
 
-        $path = '/'. APP_BASE_PATH . '/todo/tasks';
-        header("Location: $path");
+        header("Location: /todo/tasks");
     }
 
     public function tasksByTag($params){
@@ -253,7 +250,7 @@ class TaskController{
 
         $datetime = null;
         $status = trim(htmlspecialchars($_POST['status']));
-
+        
         if($status){
             if($status === 'completed'){
                 $datetime = date("Y-m-d H:i:s");
@@ -262,8 +259,7 @@ class TaskController{
             $taskModel = new TaskModel();
             $taskModel->updateTaskStatus($params['id'], $status, $datetime);
 
-            $path = '/'. APP_BASE_PATH . '/todo/tasks';
-            header("Location: $path");
+            header("Location: /todo/tasks");
         }else{
             echo "Не удалось обновить статус";
         }
@@ -277,7 +273,7 @@ class TaskController{
         $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
         $taskModel = new TaskModel();
-        $task = $taskModel->getTaskByIdAndByIdUser($params['id'], $user_id);
+        $task = $taskModel->getTaskByIdAndByIdUser($task_id, $user_id);
 
         if(!$task || $task['user_id'] != $user_id){
             http_response_code(404);
@@ -287,7 +283,7 @@ class TaskController{
 
         $todoCategoryModel = new CategoryModel();
         $category = $todoCategoryModel->getCategoryById($task['category_id']);
-
+        // tte($category);
         if(!$task){
             echo "Task not found";
             return;

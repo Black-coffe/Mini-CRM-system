@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Create role</h1>
-    <form method="POST" action="/<?= APP_BASE_PATH ?>/roles/store">
+    <form method="POST" action="/roles/store">
     <div class="mb-3">
         <label for="role_name" class="form-label">Role Name</label>
         <input type="text" class="form-control" id="role_name" name="role_name" required>

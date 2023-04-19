@@ -43,8 +43,7 @@ class RoleController{
             $roleModel = new Role();
             $roleModel->createRole($role_name, $role_description);
         }
-        $path = '/'. APP_BASE_PATH . '/roles';
-        header("Location: $path");
+        header("Location: /roles");
     }
 
     public function edit($params){
@@ -77,8 +76,7 @@ class RoleController{
             $roleModel = new Role();
             $roleModel->updateRole($id, $role_name, $role_description);
         }
-        $path = '/'. APP_BASE_PATH . '/roles';
-        header("Location: $path");
+        header("Location: /roles");
     }
 
     public function delete($params){
@@ -86,7 +84,6 @@ class RoleController{
         $roleModel = new Role();
         $roleModel->deleteRole($params['id']);
 
-        $path = '/'. APP_BASE_PATH . '/roles';
-        header("Location: $path");
+        header("Location: /roles");
     }
 }

@@ -16,28 +16,43 @@ class TagsModel {
         }
     }
 
-    public function createTables(){
-        $query = "CREATE TABLE IF NOT EXISTS `tags` (
-            `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            `user_id` INT,
-            `name` VARCHAR(255) NOT NULL,
-            FOREIGN KEY (user_id) REFERENCES users(id));
+    public function createTables()
+{
+    // Создание таблицы tags
+    $queryTags = "CREATE TABLE IF NOT EXISTS `tags` (
+        `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        `user_id` INT(11),
+        `name` VARCHAR(255) NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    );";
 
-            CREATE TABLE IF NOT EXISTS `task_tags` (
-            `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            `task_id` INT NOT NULL,
-            `tag_id` INT NOT NULL,
-            FOREIGN KEY (task_id) REFERENCES todo_list(id),
-            FOREIGN KEY (tag_id) REFERENCES tags(id)
-        );";
+    // Создание таблицы task_tags
+    $queryTaskTags = "CREATE TABLE IF NOT EXISTS `task_tags` (
+        `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        `task_id` INT(11) NOT NULL,
+        `tag_id` INT(11) NOT NULL,
+        FOREIGN KEY (task_id) REFERENCES todo_list(id),
+        FOREIGN KEY (tag_id) REFERENCES tags(id)
+    );";
 
-        try{
-            $this->db->exec($query);
+    try {
+        // выполнение первого разпроса
+        $resultTags = $this->db->exec($queryTags);
+        // выполнение второго разпроса
+        $resultTagsTask = $this->db->exec($queryTaskTags);
+
+        // Проверка на сколько успешно выполнены запросы
+        if($resultTags !== false && $resultTagsTask !== false){
             return true;
-        } catch(\PDOException $e){
-            return false;
+        } else{
+            throw new \PDOException("Ошибка при создании таблиц");
         }
+    } catch (\PDOException $e) {
+        echo "Ошибка: ". $e->getMessage();
+        return false;
     }
+}
+
 
     public function getTagsByTaskId($task_id) {
         $query = "SELECT tags.* FROM tags

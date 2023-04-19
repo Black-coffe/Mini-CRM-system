@@ -29,7 +29,7 @@ class UsersController{
     }
 
     public function store(){
-        $this->check->requirePermission();
+        // $this->check->requirePermission();
         if(isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['confirm_password'])){
             $password = trim($_POST['password']);
             $confirm_password = trim($_POST['confirm_password']);
@@ -44,13 +44,12 @@ class UsersController{
               'username' => trim(htmlspecialchars($_POST['username'])),
               'email' => trim(htmlspecialchars($_POST['email'])),
               'password' => $password,
-              'role' => 1, 
+              'role' => 3, 
             ];
             $userModel->create($data);
             
         }
-        $path = '/'. APP_BASE_PATH . '/users';
-        header("Location: $path");
+        header("Location: /users");
     }
 
     public function edit($params){
@@ -76,13 +75,11 @@ class UsersController{
             
             // Проверяем, совпадает ли роль текущего пользователя с обновленной ролью
             if ($newEmail == $_SESSION['user_email']) {
-                $path = '/' . APP_BASE_PATH . '/auth/logout';
-                header("Location: $path");
+                header("Location: /users");
                 exit();
             }
         }
-        $path = '/' . APP_BASE_PATH . '/users';
-        header("Location: $path");
+        header("Location: /users");
     }
 
 
@@ -91,8 +88,7 @@ class UsersController{
         $this->check->requirePermission();
         $userModel = new User();
         $userModel->delete($params['id']);
-        $path = '/'. APP_BASE_PATH . '/users';
-        header("Location: $path");
+        header("Location: /users");
     }
 
 }

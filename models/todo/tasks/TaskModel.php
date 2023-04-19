@@ -19,21 +19,19 @@ class TaskModel {
     public function createTable(){
         $query = "CREATE TABLE IF NOT EXISTS `todo_list` (
             `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            `user_id` INT NOT NULL,
+            `user_id` INT(11) NOT NULL,
             `title` VARCHAR(255) NOT NULL,
             `description` TEXT,
-            `category_id` INT NOT NULL,
+            `category_id` INT(11) NOT NULL,
             `status` ENUM('new', 'in_progress', 'completed', 'on_hold', 'cancelled') NOT NULL,
             `priority` ENUM('low', 'medium', 'high', 'urgent') NOT NULL,
             `assigned_to` INT,
             `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
             `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             `finish_date` DATETIME,
-            `copleted_at` DATETIME,
+            `completed_at` DATETIME,
             `reminder_at` DATETIME,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-            FOREIGN KEY (category_id) REFERENCES todo_category(id) ON DELETE SET NULL,
-            FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )";
 
         try{
@@ -68,9 +66,9 @@ class TaskModel {
             while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
                 $todo_list[] = $row;
             }
-            return $todo_list;
+            return $todo_list ? $todo_list : [];
         }catch(\PDOException $e){
-            return false;
+            return [];
         }
     }
 
@@ -84,9 +82,9 @@ class TaskModel {
             while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
                 $todo_list[] = $row;
             }
-            return $todo_list;
+            return $todo_list ? $todo_list : [];
         }catch(\PDOException $e){
-            return false;
+            return [];
         }
     }
 
@@ -100,9 +98,9 @@ class TaskModel {
             while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
                 $todo_list[] = $row;
             }
-            return $todo_list;
+            return $todo_list ? $todo_list : [];
         }catch(\PDOException $e){
-            return false;
+            return [];
         }
     }
 
@@ -197,9 +195,9 @@ class TaskModel {
 
         try{
             if($datetime !== null){
-                $query .= ", copleted_at = :copleted_at";
+                $query .= ", completed_at = :completed_at";
             }else{
-                $query .= ", copleted_at = NULL";
+                $query .= ", completed_at = NULL";
             }
 
             $query .= " WHERE id = :id";
@@ -209,7 +207,7 @@ class TaskModel {
             $params = [':status' => $status, ':id' => $id];
 
             if($datetime !== null){
-                $params[':copleted_at'] = $datetime;
+                $params[':completed_at'] = $datetime;
             }
 
             $stmt->execute($params);

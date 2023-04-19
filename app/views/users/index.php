@@ -5,7 +5,7 @@ ob_start();
 ?>
 
 <h1>User list</h1>
-<a href="/<?= APP_BASE_PATH ?>/users/create" class="btn btn-success">Create user</a>
+<a href="/users/create" class="btn btn-success">Create user</a>
 <table class="table">
     <thead>
         <tr>
@@ -32,8 +32,8 @@ ob_start();
             <td><?php echo $user['last_login']; ?></td>
         
             <td>
-                <a href="/<?= APP_BASE_PATH ?>/users/edit/<?php echo $user['id']; ?>" class="btn btn-primary">Edit</a>
-                <a href="/<?= APP_BASE_PATH ?>/users/delete/<?php echo $user['id']; ?>" class="btn btn-danger">Delete</a>
+                <a href="/users/edit/<?php echo $user['id']; ?>" class="btn btn-primary">Edit</a>
+                <a href="/users/delete/<?php echo $user['id']; ?>" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>

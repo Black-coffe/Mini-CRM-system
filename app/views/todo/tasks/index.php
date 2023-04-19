@@ -54,7 +54,7 @@ ob_start();
                         </p>
                         <p><strong><i class="fa-solid fa-file-prescription"></i> Tags:</strong> 
                             <?php foreach ($oneTask['tags'] as $tag): ?>
-                                <a href="/<?= APP_BASE_PATH ?>/todo/tasks/by-tag/<?= $tag['id'] ?>" class="tag"><?= htmlspecialchars($tag['name']) ?></a>
+                                <a href="/todo/tasks/by-tag/<?= $tag['id'] ?>" class="tag"><?= htmlspecialchars($tag['name']) ?></a>
                             <?php endforeach; ?>
                         </p>
                         <p>
@@ -63,29 +63,28 @@ ob_start();
                         <hr>
                         <div class="d-flex justify-content-start action-task">
 
-                            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="POST" class="me-2">
+                        <form action="/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="POST" class="me-2">
                                 <input type="hidden" name="status" value="cancelled">
                                 <button type="submit" class="btn <?=$oneTask['status'] == 'cancelled' ? 'btn-dark' : 'btn-secondary';?>">Cancelled</button>
                             </form>
-                            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="post" class="me-2">
+                            <form action="/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="post" class="me-2">
                                 <input type="hidden" name="status" value="new">
                                 <button type="submit" class="btn <?=$oneTask['status'] == 'new' ? 'btn-dark' : 'btn-secondary';?>">New</button>
                             </form>
-                            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="post" class="me-2">
+                            <form action="/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="post" class="me-2">
                                 <input type="hidden" name="status" value="in_progress">
                                 <button type="submit" class="btn <?=$oneTask['status'] == 'in_progress' ? 'btn-dark' : 'btn-secondary';?>">In progress</button>
                             </form>
-                            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="post" class="me-2">
+                            <form action="/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="post" class="me-2">
                                 <input type="hidden" name="status" value="on_hold">
                                 <button type="submit" class="btn <?=$oneTask['status'] == 'on_hold' ? 'btn-dark' : 'btn-secondary';?>">On hold</button>
                             </form>
-                            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="post" class="me-2">
+                            <form action="/todo/tasks/update-status/<?php echo $oneTask['id']; ?>" method="post" class="me-2">
                                 <input type="hidden" name="status" value="completed">
                                 <button type="submit" class="btn <?=$oneTask['status'] == 'completed' ? 'btn-dark' : 'btn-secondary';?>">Completed</button>
                             </form>
-
-                            <a href="/<?= APP_BASE_PATH ?>/todo/tasks/edit/<?php echo $oneTask['id']; ?>" class="btn btn-primary me-2">Edit</a>
-                            <a href="/<?= APP_BASE_PATH ?>/todo/tasks/delete/<?php echo $oneTask['id']; ?>" class="btn btn-danger me-2">Delete</a>
+                            <a href="/todo/tasks/edit/<?php echo $oneTask['id']; ?>" class="btn btn-primary me-2">Edit</a>
+                            <a href="/todo/tasks/delete/<?php echo $oneTask['id']; ?>" class="btn btn-danger me-2">Delete</a>
                         </div>
 
                     </div>

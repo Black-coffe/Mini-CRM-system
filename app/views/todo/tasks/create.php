@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Task create</h1>
-    <form method="POST" action="/<?= filter_var(APP_BASE_PATH, FILTER_SANITIZE_URL) ?>/todo/tasks/store">
+    <form method="POST" action="/todo/tasks/store">
     <div class="row">
         <!-- Title field -->
         <div class="mb-3 col-12 col-md-12">

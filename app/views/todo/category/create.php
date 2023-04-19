@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Todo category add</h1>
-    <form method="POST" action="/<?= APP_BASE_PATH ?>/todo/category/store">
+    <form method="POST" action="/todo/category/store">
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" class="form-control" id="title" name="title" required>

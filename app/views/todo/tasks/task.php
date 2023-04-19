@@ -25,37 +25,36 @@ ob_start();
         </p>
         <p><strong><i class="fa-solid fa-file-prescription"></i> Tags:</strong> 
             <?php foreach ($tags as $tag): ?>
-                <a href="/<?= APP_BASE_PATH ?>/todo/tasks/by-tag/<?= $tag['id'] ?>" class="tag"><?= htmlspecialchars($tag['name']) ?></a>
+                <a href="/todo/tasks/by-tag/<?= $tag['id'] ?>" class="tag"><?= htmlspecialchars($tag['name']) ?></a>
             <?php endforeach; ?>
         </p>
         <hr>
         <p><strong><i class="fa-solid fa-file-prescription"></i> Description:</strong> <em><?php echo htmlspecialchars($task['description'] ?? ''); ?></em></p>
         <hr>
         <div class="d-flex justify-content-start action-task">
-            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
-                <input type="hidden" name="status" value="cancelled">
-                <button type="submit" class="btn <?= $task['status'] == 'cancelled' ? 'btn-warning' : 'btn-secondary' ?>">Cancelled</button>
-            </form>
-            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
-                <input type="hidden" name="status" value="new">
-                <button type="submit" class="btn <?= $task['status'] == 'new' ? 'btn-warning' : 'btn-secondary' ?>">New</button>
-            </form>
-            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
-                <input type="hidden" name="status" value="in_progress">
-                <button type="submit" class="btn <?= $task['status'] == 'in_progress' ? 'btn-warning' : 'btn-secondary' ?>">In progress</button>
-            </form>
-            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
-                <input type="hidden" name="status" value="on_hold">
-                <button type="submit" class="btn <?= $task['status'] == 'on_hold' ? 'btn-warning' : 'btn-secondary' ?>">On hold</button>
-            </form>
-            <form action="/<?= APP_BASE_PATH ?>/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
-                <input type="hidden" name="status" value="completed">
-                <button type="submit" class="btn <?= $task['status'] == 'completed' ? 'btn-warning' : 'btn-secondary' ?>">Completed</button>
-            </form>
-
-            <a href="/<?= APP_BASE_PATH ?>/todo/tasks/edit/<?php echo $task['id']; ?>" class="btn btn-primary me-2">Edit</a>
-            <a href="/<?= APP_BASE_PATH ?>/todo/tasks/delete/<?php echo $task['id']; ?>" class="btn btn-danger me-2">Delete</a>
-        </div>
+        <form action="/todo/tasks/update-status/<?php echo $task['id']; ?>" method="POST" class="me-2">
+            <input type="hidden" name="status" value="cancelled">
+            <button type="submit" class="btn <?=$task['status'] == 'cancelled' ? 'btn-dark' : 'btn-secondary';?>">Cancelled</button>
+        </form>
+        <form action="/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
+            <input type="hidden" name="status" value="new">
+            <button type="submit" class="btn <?=$task['status'] == 'new' ? 'btn-dark' : 'btn-secondary';?>">New</button>
+        </form>
+        <form action="/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
+            <input type="hidden" name="status" value="in_progress">
+            <button type="submit" class="btn <?=$task['status'] == 'in_progress' ? 'btn-dark' : 'btn-secondary';?>">In progress</button>
+        </form>
+        <form action="/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
+            <input type="hidden" name="status" value="on_hold">
+            <button type="submit" class="btn <?=$task['status'] == 'on_hold' ? 'btn-dark' : 'btn-secondary';?>">On hold</button>
+        </form>
+        <form action="/todo/tasks/update-status/<?php echo $task['id']; ?>" method="post" class="me-2">
+            <input type="hidden" name="status" value="completed">
+            <button type="submit" class="btn <?=$task['status'] == 'completed' ? 'btn-dark' : 'btn-secondary';?>">Completed</button>
+        </form>
+        <a href="/todo/tasks/edit/<?php echo $task['id']; ?>" class="btn btn-primary me-2">Edit</a>
+        <a href="/todo/tasks/delete/<?php echo $task['id']; ?>" class="btn btn-danger me-2">Delete</a>
+    </div>
     </div>
 </div>
 

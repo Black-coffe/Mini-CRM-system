@@ -6,7 +6,7 @@ ob_start();
 ?>
 
 <h1 class="mb-4">Edit Task</h1>
-<form action="/<?= APP_BASE_PATH ?>/todo/tasks/update" method="POST">
+<form action="/todo/tasks/update" method="POST">
     <input type="hidden" name="id" value="<?= $task['id'] ?>">
     <div class="row">
         <!-- Title field -->

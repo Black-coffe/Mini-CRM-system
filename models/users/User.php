@@ -16,6 +16,19 @@ class User{
         }
     }
 
+    // Проверка на наличие таблиц и записей в базе
+    private function rolesExist(){
+        $query = "SELECT COUNT(*) FROM `roles`";
+        $stmt = $this->db->query($query);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    private function adminUserExists(){
+        $query = "SELECT COUNT(*) FROM `users` WHERE `username` = 'Admin' AND `is_admin` = 1";
+        $stmt = $this->db->query($query);
+        return $stmt->fetchColumn() > 0;
+    }
+
     public function createTable(){
         $roleTableQuery = "CREATE TABLE IF NOT EXISTS `roles` (
             `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -41,6 +54,25 @@ class User{
         try{
             $this->db->exec($roleTableQuery);
             $this->db->exec($userTableQuery);
+
+            // Вставка записей в таблицу roles
+            if (!$this->rolesExist()) {
+                $insertRolesQuery = "INSERT INTO `roles` (`role_name`, `role_description`) VALUES
+                ('Subscriber', 'Может только читать статьи и оставлять комментарии, но не имеет права создавать свой контент или управлять сайтом.'),
+                ('Editor', 'Доступ к управлению и публикации статей, страниц и других контентных материалов на сайте. Редактор также может управлять комментариями и разрешать или запрещать их публикацию.'),
+                ('Author', 'Может создавать и публиковать собственные статьи, но не имеет возможности управлять контентом других пользователей.'),
+                ('Contributor', 'Может создавать свои собственные статьи, но они не могут быть опубликованы до одобрения администратором или редактором.'),
+                ('Administrator', 'Полный доступ ко всем функциям сайта, включая управление пользователями, плагинами а также создание и публикация статей.');";
+                $this->db->exec($insertRolesQuery);
+            }
+
+            // Вставка записи в таблицу users
+            if (!$this->adminUserExists()) {
+                $insertAdminQuery = "INSERT INTO `users` (`username`, `email`, `password`, `is_admin`, `role`) VALUES
+                ('Admin', 'admin@gmail.com', '\$2y\$10\$dySccJEuCWDzywOgSoSU.eafBWHBXWp0/Nd7gohVz1z6mw1QzbEjW', 1, (SELECT `id` FROM `roles` WHERE `role_name` = 'Administrator'));";
+                $this->db->exec($insertAdminQuery);
+            }
+
             return true;
         } catch(\PDOException $e){
             return false;

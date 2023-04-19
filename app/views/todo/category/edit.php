@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Edit Category</h1>
-    <form method="POST" action="/<?= APP_BASE_PATH ?>/todo/category/update/<?php echo $category['id']; ?>">
+    <form method="POST" action="/todo/category/update/<?php echo $category['id']; ?>">
     <input type="hidden" name="id" value="<?= $category['id'] ?>">
     <div class="mb-3">
         <label for="title" class="form-label">Role Name</label>

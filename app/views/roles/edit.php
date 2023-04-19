@@ -5,7 +5,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Edit Role</h1>
-    <form method="POST" action="/<?= APP_BASE_PATH ?>/roles/update/<?php echo $role['id']; ?>">
+    <form method="POST" action="/roles/update/<?php echo $role['id']; ?>">
     <input type="hidden" name="id" value="<?= $role['id'] ?>">
     <div class="mb-3">
         <label for="role_name" class="form-label">Role Name</label>

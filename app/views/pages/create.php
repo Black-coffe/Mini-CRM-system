@@ -6,7 +6,7 @@ ob_start();
 ?>
 
   <h1 class="mb-4">Create page</h1>
-    <form method="POST" action="/<?= APP_BASE_PATH ?>/pages/store">
+    <form method="POST" action="/pages/store">
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" class="form-control" id="title" name="title" required>

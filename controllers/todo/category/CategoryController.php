@@ -44,8 +44,7 @@ class CategoryController{
             $todoCategoryModel = new CategoryModel();
             $todoCategoryModel->createCategory($title, $description, $user_id);
         }
-        $path = '/'. APP_BASE_PATH . '/todo/category';
-        header("Location: $path");
+        header("Location: /todo/category");
     }
 
     public function edit($params){
@@ -56,7 +55,7 @@ class CategoryController{
 
         $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
-        if(!$category || $category['user'] != $user_id){
+        if(!$category || $category['user_id'] != $user_id){
             http_response_code(404);
             include 'app/views/errors/404.php';
             return;
@@ -88,8 +87,7 @@ class CategoryController{
             $todoCategoryModel = new CategoryModel();
             $todoCategoryModel->updateCategory($id, $title, $description, $usability);
         }
-        $path = '/'. APP_BASE_PATH . '/todo/category';
-        header("Location: $path");
+        header("Location: /todo/category");
     }
 
     public function delete($params){
@@ -98,7 +96,6 @@ class CategoryController{
         $todoCategoryModel = new CategoryModel();
         $todoCategoryModel->deleteCategory($params['id']);
 
-        $path = '/'. APP_BASE_PATH . '/todo/category';
-        header("Location: $path");
+        header("Location: /todo/category");
     }
 }

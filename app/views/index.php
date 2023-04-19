@@ -1,9 +1,4 @@
 <?php
-if($_SERVER['REQUEST_URI'] == '/crm_for_telegram/index.php'){
-    header('Location: /crm_for_telegram/');
-    exit();
-}
-
 $title = 'Home page';
 ob_start(); 
 ?>
@@ -11,7 +6,7 @@ ob_start();
 <h1>Home page</h1>
 <div id='calendar'></div>
 
-<?php $path = '/'. APP_BASE_PATH . '/todo/tasks/task/'; ?>
+<?php $path = '/todo/tasks/task/'; ?>
 
 <script>
 // Получение данных о задачах, из нашего PHP-контроллера
