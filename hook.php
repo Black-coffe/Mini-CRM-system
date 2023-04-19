@@ -4,8 +4,8 @@ require_once 'vendor/autoload.php';
 
 use Telegram\Bot\Api;
 
-$botApiKey = '5927918632:AAGM_DWox57PI_0VdEAtorOBOnaL6eNTPNU';
-$botUsername = '@mini_crm_bot';
+$botApiKey = 'your_token';
+$botUsername = '@your_bot_name';
 
 $telegram = new Api($botApiKey);
 
