@@ -72,7 +72,9 @@ class PageModel {
         (32, 'Pages store', 'pages/store', '5', '2023-04-13 13:56:39', '2023-04-13 13:56:39'),
         (33, 'Roles delete', 'roles/delete', '5', '2023-04-13 13:57:27', '2023-04-13 13:57:27'),
         (34, 'Todo tasks task', 'todo/tasks/task', '2,3,4,5', '2023-04-13 13:59:59', '2023-04-13 14:01:02'),
-        (35, 'Todo tasks  by tag', 'todo/tasks/by-tag', '2,3,4,5', '2023-04-13 14:00:48', '2023-04-13 14:00:48');";
+        (35, 'User profile', 'users/profile', '1,2,3,4,5', '2023-04-13 13:59:59', '2023-04-13 14:01:02'),
+        (36, 'User OTP store', 'users/otpstore', '1,2,3,4,5', '2023-04-13 13:59:59', '2023-04-13 14:01:02'),
+        (37, 'Todo tasks  by tag', 'todo/tasks/by-tag', '2,3,4,5', '2023-04-13 14:00:48', '2023-04-13 14:00:48');";
 
         try{
             $this->db->exec($insertPagesQuery);

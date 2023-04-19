@@ -51,9 +51,20 @@ class User{
             FOREIGN KEY (`role`) REFERENCES `roles`(`id`)
           )";
 
+            // Создаем таблицу под OTP коды
+            $OTPTableQuery = "CREATE TABLE IF NOT EXISTS `otp_codes` (
+                `id` INT(11) NOT NULL AUTO_INCREMENT,
+                `user_id` INT(11) NOT NULL,
+                `otp_code` INT(11) NOT NULL,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+            );";
+
         try{
             $this->db->exec($roleTableQuery);
             $this->db->exec($userTableQuery);
+            $this->db->exec($OTPTableQuery);
 
             // Вставка записей в таблицу roles
             if (!$this->rolesExist()) {
@@ -151,6 +162,35 @@ class User{
             $stmt = $this->db->prepare($query);
             $stmt->execute([$username, $email, $admin, $role, $is_active, $id]);
             return true;
+        } catch(\PDOException $e){
+            return false;
+        }
+    }
+
+    public function writeOTPCodeByUserId($data){
+        $user_id = $data['user_id'];
+        $otp = $data['otp'];
+        $created_at = date('Y-m-d H:i:s');
+    
+        $query = "INSERT INTO otp_codes (user_id, otp_code, created_at) VALUES (?, ?, ?)";
+    
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$user_id, $otp, $created_at]);
+            return true;
+        } catch(\PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getLastOtpCodeByUserId($user_id){
+        $query = "SELECT * FROM otp_codes WHERE user_id = ? ORDER BY created_at DESC LIMIT 1";
+
+        try{
+            $stmt =$this->db->prepare($query);
+            $stmt->execute([$user_id]);
+            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $res;
         } catch(\PDOException $e){
             return false;
         }
