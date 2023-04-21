@@ -5,11 +5,11 @@ function is_active($path) {
     return $path === $currentPath ? 'active' : '';
 }
 
-
-// генерация одноразового OTP пароля для привязки телеграм аккаунта
-function generateOTP(){
-    $opt = rand(1000000, 9999999);
-    return $opt;
+// Генерация одноразового пароля для профайла пользователя под телеграм
+function generateOTP() {
+    $otp = rand(1000000, 9999999);
+    return $otp;
 }
+
 
 ?>

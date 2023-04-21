@@ -92,9 +92,9 @@ $user_role = isset($_SESSION['user_role']) ? $_SESSION['user_role'] : false;
                     <strong><?=$user_email?></strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <!-- <li><a class="dropdown-item" href="#">New project...</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li> -->
+                    <li><a class="dropdown-item" href="/users/profile">Profile</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
                     <li><a class="dropdown-item" href="/auth/login">Sign in</a></li>

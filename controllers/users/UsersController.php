@@ -84,7 +84,6 @@ class UsersController{
         header("Location: /users");
     }
 
-
     public function delete($params){
         $this->check->requirePermission();
         $userModel = new User();
@@ -95,51 +94,49 @@ class UsersController{
     public function profile(){
         $this->check->requirePermission();
         $user_id = $this->userId;
-
         $userModel = new User();
         $user = $userModel->read($user_id);
-
-        $roleModel = new Role();
-        $role = $roleModel->getRoleById($user['role']);
-
-        $otpLastStr = $userModel->getLastOtpCodeByUserId($user_id);
-        if($otpLastStr){
-            $otpCreated = new \DateTime($otpLastStr['created_at']);
-            $nawTime = new \DateTime(); // текущая дата и время
-            $interval = $otpCreated->diff($nawTime);
-
+    
+        $otpArr = $userModel->getLastOtpCodeByUser($user_id);
+        if($otpArr){
+            $otpCreated = new \DateTime($otpArr['created_at']);
+            $nowTime = new \DateTime(); // текущая дата и время
+            $interval = $otpCreated->diff($nowTime);
+    
             $secondsDifference = $interval->days * 24 * 60 * 60;
             $secondsDifference += $interval->h * 60 * 60;
-            $secondsDifference = $interval->i * 60;
-            $secondsDifference = $interval->s;
-            
+            $secondsDifference += $interval->i * 60;
+            $secondsDifference += $interval->s;
+    
             if($secondsDifference > 3600){
                 $otp = generateOTP();
                 $visible = true;
             }else{
-                $otp = $otpLastStr['otp_code'];
+                $otp = $otpArr['otp_code'];
                 $visible = false;
             }
         }else{
             $otp = generateOTP();
             $visible = true;
         }
+    
         include 'app/views/users/profile.php';
     }
+    
 
-    // Запись одноразового пароля в БД
     public function otpstore(){
         $this->check->requirePermission();
-
         if(isset($_POST['otp']) && isset($_POST['user_id'])){
+            $otp = trim($_POST['otp']);
+            $user_id = trim($_POST['user_id']);
 
             $userModel = new User();
                 $data = [
-                'otp' => trim(htmlspecialchars($_POST['otp'])),
-                'user_id' => trim(htmlspecialchars($_POST['user_id'])),
+                'otp' => htmlspecialchars($_POST['otp']),
+                'user_id' => htmlspecialchars($_POST['user_id']),
                 ];
-            $userModel->writeOTPCodeByUserId($data);
             
+            $userModel->writeOtpCodeByUser($data);
         }
         header("Location: /users/profile");
     }

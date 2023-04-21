@@ -51,20 +51,46 @@ class User{
             FOREIGN KEY (`role`) REFERENCES `roles`(`id`)
           )";
 
-            // Создаем таблицу под OTP коды
-            $OTPTableQuery = "CREATE TABLE IF NOT EXISTS `otp_codes` (
-                `id` INT(11) NOT NULL AUTO_INCREMENT,
-                `user_id` INT(11) NOT NULL,
-                `otp_code` INT(11) NOT NULL,
-                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (`id`),
-                FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+          // Создаем таблицу под OTP коды
+          $OTPTableQuery = "CREATE TABLE IF NOT EXISTS `otp_codes` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT,
+            `user_id` INT(11) NOT NULL,
+            `otp_code` INT(11) NOT NULL,
+            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (`id`),
+            FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+          );";
+
+          // Создаем таблицу для хранения состояний пользователей
+          $userStatesQuery = "CREATE TABLE IF NOT EXISTS `user_states` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            `chat_id` INT(11) NOT NULL,
+            `user_id` INT(11) DEFAULT NULL,
+            `state` VARCHAR(255) NOT NULL,
+            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE INDEX(chat_id)
+        );";
+
+        // Создаем таблицу для пользователей телеграмм
+          $userTelegramQuery = "CREATE TABLE IF NOT EXISTS `user_telegrams` (
+              `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+              `user_id` INT(11) NOT NULL,
+              `telegram_chat_id` VARCHAR(255) NOT NULL,
+              `telegram_username` VARCHAR(255) NOT NULL,
+              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
             );";
+        
 
         try{
             $this->db->exec($roleTableQuery);
             $this->db->exec($userTableQuery);
             $this->db->exec($OTPTableQuery);
+            $this->db->exec($userStatesQuery);
+            $this->db->exec($userTelegramQuery);
+
+
 
             // Вставка записей в таблицу roles
             if (!$this->rolesExist()) {
@@ -167,9 +193,11 @@ class User{
         }
     }
 
-    public function writeOTPCodeByUserId($data){
-        $user_id = $data['user_id'];
+    // Записываем сгенерированный OTP code в базу
+    public function writeOtpCodeByUser($data) {
         $otp = $data['otp'];
+        $user_id = $data['user_id'];
+    
         $created_at = date('Y-m-d H:i:s');
     
         $query = "INSERT INTO otp_codes (user_id, otp_code, created_at) VALUES (?, ?, ?)";
@@ -178,23 +206,81 @@ class User{
             $stmt = $this->db->prepare($query);
             $stmt->execute([$user_id, $otp, $created_at]);
             return true;
-        } catch(\PDOException $e) {
+        } catch (\PDOException $e) {
             return false;
         }
     }
 
-    public function getLastOtpCodeByUserId($user_id){
+    public function getLastOtpCodeByUser($user_id) {
         $query = "SELECT * FROM otp_codes WHERE user_id = ? ORDER BY created_at DESC LIMIT 1";
-
-        try{
-            $stmt =$this->db->prepare($query);
+        try {
+            $stmt = $this->db->prepare($query);
             $stmt->execute([$user_id]);
-            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
-            return $res;
-        } catch(\PDOException $e){
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
             return false;
         }
     }
     
+    // Получение состояния пользователя для авторизации через телеграм
+    public function getUserState($chatId) {
+        $query = "SELECT * FROM user_states WHERE chat_id = ?";
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$chatId]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+
+    // Запись состояния пользователя для авторизации через телеграм
+    public function setUserState($chatId, $state, $userId = null){
+        $query = "INSERT INTO user_states (chat_id, state, user_id) VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE state = ?, user_id = ?";
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$chatId, $state, $userId, $state, $userId]);
+        }catch (\PDOException $e) {
+            return false;
+        }
+    }
+
+    // Получение пользователя по email
+    public function getUserByEmail($email) {
+        $query = "SELECT * FROM users WHERE email = ?";
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$email]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+    
+    // Создание пользоателя Телеграмм+miniCRM
+    public function createUserTelegram($userId, $chatId, $username)
+        {
+            $query = "INSERT INTO user_telegrams (user_id, telegram_chat_id, telegram_username) VALUES (?, ?, ?)";
+            try {
+                $stmt = $this->db->prepare($query);
+                return $stmt->execute([$userId, $chatId, $username]);
+            } catch (\PDOException $e) {
+                return false;
+            }
+        }
+
+    // Получение информации о пользователе по его ID и введенному в телеграм OTP паролю
+    public function getOtpInfoByUserIdAndCode($userId, $otpCode)
+        {
+            $query = "SELECT * FROM otp_codes WHERE user_id = ? AND otp_code = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 60 MINUTE)";
+            try {
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$userId, $otpCode]);
+                return $stmt->fetch(\PDO::FETCH_ASSOC);
+            } catch (\PDOException $e) {
+                return false;
+            }
+        }
 
 }
