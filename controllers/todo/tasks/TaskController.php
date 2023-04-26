@@ -95,6 +95,8 @@ class TaskController{
             $data['user_id'] = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
             $data['status'] = 'new';
             $data['priority'] = 'low';
+            $data['reminder_at'] = date('Y-m-d H:i:s', strtotime($data['finish_date'] . REMINDER_DATA));
+            
 
             $taskModel = new TaskModel();
             $taskModel->createTask($data);
@@ -293,5 +295,34 @@ class TaskController{
 
         include 'app/views/todo/tasks/task.php';
     }
+
+
+    public function generatestore()
+    {
+        // $this->check->requirePermission();
+
+        $data['categories_range'] = isset($_POST['categories_range']) ? explode(',', $_POST['categories_range']) : [1, 5];
+        $data['users_range'] = isset($_POST['users_range']) ? explode(',', $_POST['users_range']) : [1, 10];
+        $data['created_at_range'] = isset($_POST['created_at_range']) ? explode(' to ', $_POST['created_at_range']) : ['2022-01-01', '2022-12-31'];
+        $data['finish_date_range'] = isset($_POST['finish_date_range']) ? explode(' to ', $_POST['finish_date_range']) : ['2022-01-01', '2023-12-31'];
+        $data['count'] = isset($_POST['count']) ? intval($_POST['count']) : 100;
+
+        $taskModel = new TaskModel();
+        $result = $taskModel->generateTasks($data);
+
+        if ($result) {
+            echo 'Tasks have been successfully generated!';
+            header("Location: /todo/tasks/generate");
+        } else {
+            echo 'Error occurred during tasks generation' . $result;
+        }
+    }
+
+    public function generate(){
+        // $this->check->requirePermission();
+
+        include 'app/views/todo/tasks/generate.php';
+    }
+
 
 }

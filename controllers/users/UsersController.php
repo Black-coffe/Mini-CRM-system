@@ -98,6 +98,7 @@ class UsersController{
         $user = $userModel->read($user_id);
     
         $otpArr = $userModel->getLastOtpCodeByUser($user_id);
+        $isUserTelegram = $userModel->getInfoByUserIdFromTelegramTable($user_id);
         if($otpArr){
             $otpCreated = new \DateTime($otpArr['created_at']);
             $nowTime = new \DateTime(); // текущая дата и время

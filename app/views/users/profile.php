@@ -32,6 +32,10 @@ ob_start();
               <td><?php echo $user['is_admin'] ? 'Да' : 'Нет'; ?></td>
             </tr>
             <tr>
+              <th scope="row">Привязан телеграм</th>
+              <td><?php echo $isUserTelegram['telegram_username'] ? $isUserTelegram['telegram_username'] : 'Нет'; ?></td>
+            </tr>
+            <tr>
               <th scope="row">Роль</th>
               <td><?php echo $user['role']; ?></td>
             </tr>
@@ -44,6 +48,7 @@ ob_start();
       </div>
     </div>
 
+<?php if(!$isUserTelegram): ?>    
   <hr class="mt-5">
 
   <h3 class="mb-4">Генерация одноразового пароля</h3>
@@ -66,9 +71,8 @@ ob_start();
     <input type="hidden" name="user_id" value="<?=$_SESSION['user_id'];?>">
     <button type="submit" class="btn btn-primary">Сохранить код</button>
   </form>
-  <?php else: ?>
-    
   <?php endif ?>
+<?php endif ?>
 </div>
 
 

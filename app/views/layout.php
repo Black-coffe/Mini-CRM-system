@@ -51,6 +51,12 @@ $user_role = isset($_SESSION['user_role']) ? $_SESSION['user_role'] : false;
                                 Pages
                             </a>
                         </li>
+                        <li>
+                            <a href="/todo/tasks/generate" class="nav-link text-white <?= is_active('/todo/tasks/generate') ?>">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="/todo/tasks/generate"></use></svg>
+                                Generate test tasks
+                            </a>
+                        </li>
                         <hr>
                     <?php endif ?>
                     <h4>To do list</h4>

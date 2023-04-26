@@ -61,6 +61,17 @@ class User{
             FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
           );";
 
+          // Создаем таблицу для пользователей телеграмм
+          $userTelegramQuery = "CREATE TABLE IF NOT EXISTS `user_telegrams` (
+              `id` INT(11) NOT NULL AUTO_INCREMENT,
+              `user_id` INT(11) NOT NULL,
+              `telegram_chat_id` VARCHAR(255) NOT NULL,
+              `telegram_username` VARCHAR(255) NOT NULL,
+              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              PRIMARY KEY (`id`),
+              FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+            );";
+
           // Создаем таблицу для хранения состояний пользователей
           $userStatesQuery = "CREATE TABLE IF NOT EXISTS `user_states` (
             `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -72,24 +83,12 @@ class User{
             UNIQUE INDEX(chat_id)
         );";
 
-        // Создаем таблицу для пользователей телеграмм
-          $userTelegramQuery = "CREATE TABLE IF NOT EXISTS `user_telegrams` (
-              `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-              `user_id` INT(11) NOT NULL,
-              `telegram_chat_id` VARCHAR(255) NOT NULL,
-              `telegram_username` VARCHAR(255) NOT NULL,
-              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-              FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
-            );";
-        
-
         try{
             $this->db->exec($roleTableQuery);
             $this->db->exec($userTableQuery);
             $this->db->exec($OTPTableQuery);
-            $this->db->exec($userStatesQuery);
             $this->db->exec($userTelegramQuery);
-
+            $this->db->exec($userStatesQuery);
 
 
             // Вставка записей в таблицу roles
@@ -222,54 +221,6 @@ class User{
         }
     }
     
-    // Получение состояния пользователя для авторизации через телеграм
-    public function getUserState($chatId) {
-        $query = "SELECT * FROM user_states WHERE chat_id = ?";
-        try {
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$chatId]);
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            return false;
-        }
-    }
-
-    // Запись состояния пользователя для авторизации через телеграм
-    public function setUserState($chatId, $state, $userId = null){
-        $query = "INSERT INTO user_states (chat_id, state, user_id) VALUES (?, ?, ?)
-            ON DUPLICATE KEY UPDATE state = ?, user_id = ?";
-        try{
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$chatId, $state, $userId, $state, $userId]);
-        }catch (\PDOException $e) {
-            return false;
-        }
-    }
-
-    // Получение пользователя по email
-    public function getUserByEmail($email) {
-        $query = "SELECT * FROM users WHERE email = ?";
-        try {
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$email]);
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            return false;
-        }
-    }
-    
-    // Создание пользоателя Телеграмм+miniCRM
-    public function createUserTelegram($userId, $chatId, $username)
-        {
-            $query = "INSERT INTO user_telegrams (user_id, telegram_chat_id, telegram_username) VALUES (?, ?, ?)";
-            try {
-                $stmt = $this->db->prepare($query);
-                return $stmt->execute([$userId, $chatId, $username]);
-            } catch (\PDOException $e) {
-                return false;
-            }
-        }
-
     // Получение информации о пользователе по его ID и введенному в телеграм OTP паролю
     public function getOtpInfoByUserIdAndCode($userId, $otpCode)
         {
@@ -282,5 +233,88 @@ class User{
                 return false;
             }
         }
+
+    // Создание пользователя с телеграмм в новой таблице после авторизации через OTP code
+    public function createUserTelegram($userId, $chatId, $username)
+        {
+            $query = "INSERT INTO user_telegrams (user_id, telegram_chat_id, telegram_username) VALUES (?, ?, ?)";
+            try {
+                $stmt = $this->db->prepare($query);
+                return $stmt->execute([$userId, $chatId, $username]);
+            } catch (\PDOException $e) {
+                return false;
+            }
+        }
+
+        /**
+     * Get a user by email
+     *
+     * @param string $email
+     * @return array|bool
+     */
+    public function getUserByEmail($email)
+    {
+        $query = "SELECT * FROM users WHERE email = ?";
+
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$email]);
+            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $res;
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getUserState($chatId) {
+        $sql = "SELECT * FROM user_states WHERE chat_id = :chat_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':chat_id', $chatId, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function setUserState($chatId, $state, $userId = null)
+    {
+        $sql = "INSERT INTO user_states (chat_id, state, user_id) VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE state = ?, user_id = ?";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$chatId, $state, $userId, $state, $userId]);
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+
+     // Получить информацию о пользователе с таблицы "user_telegrams" по user_id
+     public function getInfoByUserIdFromTelegramTable($user_id){
+        $query = "SELECT * FROM user_telegrams WHERE user_id = ?";
+
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$user_id]);
+            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $res;
+        } catch (\PDOException $e) {
+            return false;
+        }
+     }
+
+     // Получить информацию о пользователе с таблицы "user_telegrams" по telegram_chat_id
+     public function getUserByTelegramChatId($telegram_chat_id){
+        $query = "SELECT * FROM user_telegrams WHERE telegram_chat_id = ?";
+
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$telegram_chat_id]);
+            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $res;
+        } catch (\PDOException $e) {
+            return false;
+        }
+     }
+
+    
 
 }

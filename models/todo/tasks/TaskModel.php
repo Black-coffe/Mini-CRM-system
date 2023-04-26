@@ -34,8 +34,19 @@ class TaskModel {
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )";
 
+        $remindersTable = "CREATE TABLE IF NOT EXISTS `todo_reminders` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            `user_id` INT(11) NOT NULL,
+            `task_id` INT(11) NOT NULL,
+            `reminder_at` DATETIME,
+            `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (task_id) REFERENCES todo_list(id) ON DELETE CASCADE,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );";
+
         try{
             $this->db->exec($query);
+            $this->db->exec($remindersTable);
             return true;
         } catch(\PDOException $e){
             return false;
@@ -107,11 +118,11 @@ class TaskModel {
     public function createTask($data)
     
     {
-        $query = "INSERT INTO todo_list (user_id, title, category_id, status, priority, finish_date) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO todo_list (user_id, title, category_id, status, priority, finish_date, reminder_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$data['user_id'], $data['title'], $data['category_id'], $data['status'], $data['priority'], $data['finish_date']]);
+            $stmt->execute([$data['user_id'], $data['title'], $data['category_id'], $data['status'], $data['priority'], $data['finish_date'],  $data['reminder_at']]);
             return true;
         } catch(\PDOException $e) {
             return false;
@@ -217,6 +228,66 @@ class TaskModel {
         } 
     }
 
+    public function getTasksCountAndStatusByUserId($user_id){
 
+        $query = "SELECT
+        COUNT(*) AS all_tasks,
+        SUM(status = 'completed') AS completed,
+        SUM(status != 'completed' AND finish_date < NOW() OR status != 'completed' AND finish_date IS NULL) AS expired,
+        SUM(status != 'completed' AND finish_date > NOW() OR status != 'completed' AND finish_date IS NULL) AS opened
+        FROM
+            todo_list
+        WHERE user_id = :user_id";
+
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->execute(['user_id' => $user_id]);
+            $todo_list = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $todo_list ? $todo_list : $todo_list = [];
+        }catch(\PDOException $e){
+            return [];
+        } 
+    }
+
+// ГЕНЕРАЦИЯ ЗАДАННОГО ВАМИ КОЛИЧЕСТВА ТЕСТОВЫХ ЗАДАЧ
+public function generateTasks($data)
+    {
+    $query = "INSERT INTO todo_list (user_id, title, category_id, description, status, priority, created_at, finish_date, reminder_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    try {
+        $i = 1;
+        $stmt = $this->db->prepare($query);
+        $finish_date_min = strtotime($data['finish_date_range'][0]);
+        $finish_date_max = isset($data['finish_date_range'][1]) ? strtotime($data['finish_date_range'][1]) : $finish_date_min;
+        $created_at_min = strtotime($data['created_at_range'][0]);
+        $created_at_max = isset($data['created_at_range'][1]) ? strtotime($data['created_at_range'][1]) : $created_at_min;
+        while ($i <= $data['count']) {
+            $user_id = rand($data['users_range'][0], $data['users_range'][1]);
+            $title = "Генеренная задача номер $i";
+            $category_id = rand($data['categories_range'][0], $data['categories_range'][1]);
+            $description = "Описание автогенеренной задачи номер $i";
+            $statuses = ['new', 'in_progress', 'completed', 'on_hold', 'cancelled'];
+            $status = $statuses[rand(0, 4)];
+            $priorities = ['low', 'medium', 'high', 'urgent'];
+            $priority = $priorities[rand(0, 3)];
+            // finishDates
+            $random_timestamp = rand($finish_date_min, $finish_date_max);
+            $finish_date = date('Y-m-d H:i:s', $random_timestamp);
+            // created_at_range
+            $random_timestamp = rand($created_at_min, $created_at_max);
+            $created_at = date('Y-m-d H:i:s', $random_timestamp);
+            $reminder_timestamp = strtotime($finish_date) - 3600; // вычитаем 3600 секунд (1 час) из временной метки $finish_date
+            $reminder_at = date('Y-m-d H:i:s', $reminder_timestamp); // форматируем новую временную метку в дату и время
+            
+            $values = [$user_id, $title, $category_id, $description, $status, $priority, $created_at, $finish_date, $reminder_at];
+            $stmt->execute($values);
+            $i++;
+        }
+        return true;
+    } catch(\PDOException $e) {
+        return $e->getMessage();
+    }
+    
+    
+    }
 }
-?>
