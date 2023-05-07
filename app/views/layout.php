@@ -58,6 +58,20 @@ $user_role = isset($_SESSION['user_role']) ? $_SESSION['user_role'] : false;
                             </a>
                         </li>
                         <hr>
+                        <h4>Quiz</h4>
+                        <li>
+                            <a href="/quiz" class="nav-link text-white <?= is_active('/quiz') ?>">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="/quiz"></use></svg>
+                                Quiz
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/quiz/create" class="nav-link text-white <?= is_active('/quiz/create') ?>">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="/quiz/create"></use></svg>
+                                Quiz create
+                            </a>
+                        </li>
+                        <hr>
                     <?php endif ?>
                     <h4>To do list</h4>
                     <li>

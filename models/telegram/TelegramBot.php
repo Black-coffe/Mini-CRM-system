@@ -30,6 +30,42 @@ class TelegramBot {
 
         return json_decode($response, true);
     }
+
+    public function sendTelegramQuizMessage($data, $headers = []) {
+        $url = "https://api.telegram.org/bot{$this->botApiKey}/sendPoll";
+        $postData = [
+            'chat_id' => $data['chat_id'],
+            'parse_mode' => 'HTML',
+            'question' => $data['question'],
+            'options' => json_encode($data['options']),
+            'is_anonymous' => $data['is_anonymous'], // True & False
+            'allows_multiple_answers' => $data['allows_multiple_answers'], // True & False
+            'type' => 'quiz',
+            'correct_option_id' => $data['correct_option_id'],
+            'explanation' => $data['explanation']
+        ];
+    
+        $curl = curl_init($url);
+        curl_setopt_array($curl, [
+            CURLOPT_POST => 1,
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $url,
+            CURLOPT_POSTFIELDS => json_encode($postData),
+            CURLOPT_HTTPHEADER => array_merge(["Content-Type: application/json"], $headers)
+        ]);
+    
+        $result = curl_exec($curl);
+        $error = curl_error($curl);
+        curl_close($curl);
+    
+        if ($result === false) {
+            throw new \Exception('Error sending Telegram quiz message: ' . $error);
+        }
+    
+        return json_decode($result, true);
+    }
+    
     
 
     public function handleUpdate($update) {

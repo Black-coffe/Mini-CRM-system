@@ -113,3 +113,14 @@ div.tags-container div.tag span{
     background-color: coral;
     cursor: pointer;
 }
+
+
+/* Стили для Quiz */
+.quiz .accordion-item h2 button span strong{
+    color:olivedrab;
+    font-weight: 600;
+}
+
+.quiz .accordion-header button.accordion-button span i{
+    color:darkgreen;
+}
