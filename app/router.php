@@ -16,6 +16,8 @@ class Router {
         '/^\/todo\/tasks\/update-status(\/(?P<id>\d+))?$/' => ['controller' => 'todo\tasks\\TaskController', 'action' => 'updateStatus'],
         '/^\/todo\/tasks\/task(\/(?P<id>\d+))?$/' => ['controller' => 'todo\tasks\\TaskController', 'action' => 'task'],
         '/^\/quiz(\/(?P<action>[a-z]+)(\/(?P<id>\d+))?)?$/' => ['controller' => 'quiz\\QuizController'],
+        '/^\/shortlink(\/(?P<action>[a-z]+)(\/(?P<id>\d+))?)?$/' => ['controller' => 'shortlink\\ShortLinkController'],
+        '/^\/([a-zA-Z0-9-]{6,10})$/' => ['controller' => 'shortlink\\ShortLinkController', 'action' => 'redirect'],
     ];
 
     public function run() {

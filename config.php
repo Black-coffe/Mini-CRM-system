@@ -29,6 +29,6 @@ define('TEKEGRAM_BOT_API_KEY', '');
 define('REMINDER_DATA', ' +1 day');
 
 //Телеграм ID чат для вопросов
-define('TELEGRAM_CHAT_ID', '-');
+define('TELEGRAM_CHAT_ID', '');
 
 

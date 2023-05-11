@@ -7,5 +7,8 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # Перенаправить запросы на index.php
 RewriteRule ^(.*)$ index.php/$1 [L]
 
+# Перенаправление для сокращателя ссылок
+RewriteRule ^([a-zA-Z0-9-]{6,10})$ /shortlink/redirect/$1 [L]
+
 
 
