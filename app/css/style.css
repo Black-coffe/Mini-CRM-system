@@ -124,3 +124,18 @@ div.tags-container div.tag span{
 .quiz .accordion-header button.accordion-button span i{
     color:darkgreen;
 }
+
+/* Стили для short_link */
+.short_link .accordion-item h2 button{
+    color:olivedrab !important;
+    font-weight: 600;
+}
+
+.short_link .accordion-header button.accordion-button span i{
+    color:darkgreen;
+}
+
+
+.information_click tr td{
+    font-size: 12px !important;
+}

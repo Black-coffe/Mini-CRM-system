@@ -56,7 +56,7 @@ ob_start();
   <ul class="list-group">
     <li class="list-group-item">Нажамите <strong>Сохранить пароль</strong></li>
     <li class="list-group-item">Перейдите в телеграм и найдите в поиске бота: <a target="_blank" href="https://t.me/mini_crm_bot" >@mini_crm_bot</a>.</li>
-    <li class="list-group-item">Введите команду /email</li>
+    <li class="list-group-item">Введите команду /addaccount</li>
     <li class="list-group-item">Бот запросит ваш email, вот он: <strong><?php echo $user['email']; ?></strong></li>
     <li class="list-group-item">Бот запросит OTP code, вот он: <strong><?=$otp;?></strong></li>
     <li class="list-group-item">Если все сделаете верно, ваши аккаунты будут связаны!</li>

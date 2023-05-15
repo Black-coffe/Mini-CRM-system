@@ -29,10 +29,16 @@ ob_start();
                 aria-labelledby="heading-<?php echo $short_link['id']; ?>" 
                 data-bs-parent="#tasks-accordion">
                     <div class="accordion-body">
+                        <p><strong>Amount click:</strong> <?php echo $short_link['clicks'] ?  $short_link['clicks'] : 0; ?></p>
                         <p><strong>Short Code:</strong> <?php echo $short_link['short_url']; ?></p>
-                        <p><strong>Short URL:</strong> <a target="_blank" href="<?php echo "/". $short_link['short_url']; ?>"><?php echo $domain . $short_link['short_url']; ?></a></p>
+                        <p><strong>Short URL:</strong> <a target="_blank" href="<?php echo "/". $short_link['short_url']; ?>"><?php echo $domain . "/" . $short_link['short_url']; ?></a></p>
                         <p><strong>Original URL:</strong> <a target="_blank" href="<?php echo $short_link['original_url']; ?>"><?php echo $short_link['original_url']; ?></a></p>
                         <p><strong>Created at:</strong> <?php echo $short_link['created_at']; ?></p>
+                    </div>
+                    <div class="d-flex justify-content-start action-quiz m-2">
+                        <a href="/shortlink/edit/<?php echo $short_link['id']; ?>" class="btn btn-primary me-2">Edit</a>
+                        <a href="/shortlink/delete/<?php echo $short_link['id']; ?>" class="btn btn-danger me-2">Delete</a>
+                        <a href="/shortlink/information/<?php echo $short_link['id']; ?>" class="btn btn-info me-2">Information about clicks</a>
                     </div>
                 </div>
             </div>
